@@ -1,0 +1,102 @@
+@model PaymentStatusModel
+@{
+    Layout = "_ColumnsOne";
+    NopHtml.AddTitleParts(T("Plugins.Payments.PhonePe.PaymentStatus").Text);
+}
+
+<div class="page payment-status-page">
+    <div class="page-title">
+        <h1>@T("Plugins.Payments.PhonePe.PaymentStatus")</h1>
+    </div>
+    <div class="page-body">
+        @if (Model.IsProcessing)
+        {
+            <div class="payment-processing">
+                <div class="alert alert-info">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">@T("Plugins.Payments.PhonePe.Processing")</span>
+                    </div>
+                    <h3>@T("Plugins.Payments.PhonePe.ProcessingPayment")</h3>
+                    <p>@T("Plugins.Payments.PhonePe.PleaseWait")</p>
+                    @if (!string.IsNullOrEmpty(Model.CustomOrderNumber))
+                    {
+                        <p><strong>@T("Order.OrderNumber"): @Model.CustomOrderNumber</strong></p>
+                    }
+                </div>
+            </div>
+
+            <script>
+                var checkCount = 0;
+                var maxChecks = 60; // Check for 2 minutes (60 * 2 seconds)
+
+                function checkPaymentStatus() {
+                    if (checkCount >= maxChecks) {
+                        showTimeoutMessage();
+                        return;
+                    }
+
+                    checkCount++;
+
+                    fetch('@Model.CheckStatusUrl')
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'paid') {
+                                window.location.href = data.redirectUrl;
+                            } else if (data.status === 'failed') {
+                                showErrorMessage(data.message);
+                                setTimeout(() => {
+                                    window.location.href = data.redirectUrl;
+                                }, 3000);
+                            } else {
+                                // Still pending, check again in 2 seconds
+                                setTimeout(checkPaymentStatus, 2000);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error checking status:', error);
+                            setTimeout(checkPaymentStatus, 2000);
+                        });
+                }
+
+                function showTimeoutMessage() {
+                    document.querySelector('.payment-processing').innerHTML = `
+                        <div class="alert alert-warning">
+                            <h3>@T("Plugins.Payments.PhonePe.StatusCheckTimeout")</h3>
+                            <p>@T("Plugins.Payments.PhonePe.CheckOrderHistory")</p>
+                            <a href="@Url.RouteUrl("CustomerOrders")" class="button-1">
+                                @T("Plugins.Payments.PhonePe.ViewOrders")
+                            </a>
+                        </div>
+                    `;
+                }
+
+                function showErrorMessage(message) {
+                    document.querySelector('.payment-processing').innerHTML = `
+                        <div class="alert alert-danger">
+                            <h3>@T("Plugins.Payments.PhonePe.PaymentFailed")</h3>
+                            <p>${message}</p>
+                        </div>
+                    `;
+                }
+
+                // Start checking after page load
+                window.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(checkPaymentStatus, 2000);
+                });
+            </script>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                <h3>@Model.Message</h3>
+                @if (Model.ShowOrderHistory)
+                {
+                    <p>@T("Plugins.Payments.PhonePe.CheckOrderHistoryMessage")</p>
+                    <a href="@Model.OrderHistoryUrl" class="button-1">
+                        @T("Plugins.Payments.PhonePe.ViewOrders")
+                    </a>
+                }
+            </div>
+        }
+    </div>
+</div>

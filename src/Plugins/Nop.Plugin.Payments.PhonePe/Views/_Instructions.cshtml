@@ -1,0 +1,17 @@
+@model ConfigurationModel
+
+<div class="alert alert-info">
+    <h4>@T("Plugins.Payments.PhonePe.Instructions")</h4>
+    <ul>
+        <li>Register for a PhonePe merchant account at <a href="https://business.phonepe.com/" target="_blank">PhonePe Business</a></li>
+        <li>Obtain your Merchant ID, Salt Key, and Salt Index from the PhonePe merchant dashboard</li>
+        <li>Configure your webhook URLs in PhonePe dashboard:
+            <ul>
+                <li>Payment Callback: <code>@(Url.RouteUrl("Plugin.Payments.PhonePe.PaymentCallback", null, Request.Scheme))</code></li>
+                <li>Webhook: <code>@(Url.RouteUrl("Plugin.Payments.PhonePe.Webhook", null, Request.Scheme))</code></li>
+            </ul>
+        </li>
+        <li>Test in sandbox mode before enabling production</li>
+        <li>Ensure your site uses HTTPS for production transactions</li>
+    </ul>
+</div>
