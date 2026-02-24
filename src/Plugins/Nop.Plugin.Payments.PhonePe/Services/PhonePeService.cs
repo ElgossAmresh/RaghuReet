@@ -336,5 +336,37 @@ public class PhonePeService : IPhonePeService
         return $"{checksum}###{_settings.SaltIndex}";
     }
 
+    /// <summary>
+    /// Validates the PhonePe webhook Authorization header.
+    /// </summary>
+    /// <param name="receivedHeader">The value of the 'Authorization' header from the request.</param>
+    /// <param name="username">The username you configured in the PhonePe Dashboard.</param>
+    /// <param name="password">The password you configured in the PhonePe Dashboard.</param>
+    /// <returns>True if the signature is valid; otherwise, false.</returns>
+    public static bool ValidateCallback(string receivedHeader, string username, string password)
+    {
+        if (string.IsNullOrEmpty(receivedHeader))
+            return false;
+
+        // 1. Construct the raw string: username:password
+        string rawString = $"{username}:{password}";
+
+        // 2. Compute SHA256 hash
+        using (SHA256 sha256Hash = SHA256.Create())
+        {
+            byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawString));
+
+            // 3. Convert byte array to a lowercase hex string
+            StringBuilder builder = new StringBuilder();
+            foreach (byte b in bytes)
+            {
+                builder.Append(b.ToString("x2"));
+            }
+            string calculatedHash = builder.ToString();
+
+            // 4. Case-insensitive comparison
+            return string.Equals(receivedHeader, calculatedHash, StringComparison.OrdinalIgnoreCase);
+        }
+    }
     #endregion
 }

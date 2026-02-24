@@ -22,6 +22,10 @@ public class PhonePeWebhookController : Controller
     private readonly IOrderProcessingService _orderProcessingService;
     private readonly ILogger _logger;
 
+    private readonly string _webHookUser="dlsir";
+    private readonly string _webHookPwd = "Test123";
+
+
     #endregion
 
     #region Ctor
@@ -57,12 +61,20 @@ public class PhonePeWebhookController : Controller
             await _logger.InformationAsync($"PhonePe webhook signature: {signature}");
 
             //TODO - Need to fix it later
-            ////// Verify webhook signature
-            ////if (!_phonePeService.VerifyWebhookSignature(payload, signature))
-            ////{
-            ////    await _logger.ErrorAsync("PhonePe webhook signature verification failed");
-            ////    return BadRequest("Invalid signature");
-            ////}
+            //////// Verify webhook signature
+            //////if (!_phonePeService.VerifyWebhookSignature(payload, signature))
+            //////{
+            //////    await _logger.ErrorAsync("PhonePe webhook signature verification failed");
+            //////    return BadRequest("Invalid signature");
+            //////}
+
+            // Verify webhook signature
+            if (!_phonePeService.ValidateCallback(payload, _webHookUser, _webHookPwd))
+            {
+                await _logger.ErrorAsync("PhonePe webhook signature verification failed");
+                return BadRequest("Invalid signature");
+            }
+
 
             // Configure JsonSerializerOptions for case-insensitive deserialization
             var options = new JsonSerializerOptions
