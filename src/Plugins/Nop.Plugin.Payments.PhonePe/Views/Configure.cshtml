@@ -14,6 +14,7 @@
                     <ul>
                         <li>Register for a PhonePe merchant account at <a href="https://business.phonepe.com/" target="_blank">PhonePe Business</a></li>
                         <li>Obtain your Client ID, Client Secret, Salt Key, and Salt Index from the PhonePe merchant dashboard</li>
+                        <li>Configure separate credentials for Sandbox and Production environments</li>
                         <li>Configure your webhook URLs in PhonePe dashboard</li>
                         <li>Test in sandbox mode before enabling production</li>
                         <li>Ensure your site uses HTTPS for production transactions</li>
@@ -22,27 +23,74 @@
 
                 <div class="form-group row">
                     <div class="col-md-3">
-                        <nop-override-store-checkbox asp-for="ClientId_OverrideForStore" asp-input="ClientId" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
-                        <nop-label asp-for="ClientId" />
+                        <nop-override-store-checkbox asp-for="UseSandbox_OverrideForStore" asp-input="UseSandbox" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="UseSandbox" />
                     </div>
                     <div class="col-md-9">
-                        <nop-editor asp-for="ClientId" />
-                        <span asp-validation-for="ClientId"></span>
+                        <nop-editor asp-for="UseSandbox" />
+                        <span asp-validation-for="UseSandbox"></span>
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <nop-override-store-checkbox asp-for="ClientSecret_OverrideForStore" asp-input="ClientSecret" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
-                        <nop-label asp-for="ClientSecret" />
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Production Credentials</h3>
                     </div>
-                    <div class="col-md-9">
-                        <nop-editor asp-for="ClientSecret" asp-password="true" />
-                        <span asp-validation-for="ClientSecret"></span>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-override-store-checkbox asp-for="ClientId_OverrideForStore" asp-input="ClientId" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                                <nop-label asp-for="ClientId" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="ClientId" />
+                                <span asp-validation-for="ClientId"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-override-store-checkbox asp-for="ClientSecret_OverrideForStore" asp-input="ClientSecret" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                                <nop-label asp-for="ClientSecret" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="ClientSecret" asp-password="true" />
+                                <span asp-validation-for="ClientSecret"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="card card-secondary mt-3">
+                    <div class="card-header">
+                        <h3 class="card-title">Sandbox Credentials</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-override-store-checkbox asp-for="SandboxClientId_OverrideForStore" asp-input="SandboxClientId" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                                <nop-label asp-for="SandboxClientId" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="SandboxClientId" />
+                                <span asp-validation-for="SandboxClientId"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-override-store-checkbox asp-for="SandboxClientSecret_OverrideForStore" asp-input="SandboxClientSecret" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                                <nop-label asp-for="SandboxClientSecret" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="SandboxClientSecret" asp-password="true" />
+                                <span asp-validation-for="SandboxClientSecret"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
                     <div class="col-md-3">
                         <nop-override-store-checkbox asp-for="SaltKey_OverrideForStore" asp-input="SaltKey" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
                         <nop-label asp-for="SaltKey" />
@@ -61,17 +109,6 @@
                     <div class="col-md-9">
                         <nop-editor asp-for="SaltIndex" />
                         <span asp-validation-for="SaltIndex"></span>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-md-3">
-                        <nop-override-store-checkbox asp-for="UseSandbox_OverrideForStore" asp-input="UseSandbox" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
-                        <nop-label asp-for="UseSandbox" />
-                    </div>
-                    <div class="col-md-9">
-                        <nop-editor asp-for="UseSandbox" />
-                        <span asp-validation-for="UseSandbox"></span>
                     </div>
                 </div>
 

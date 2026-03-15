@@ -265,10 +265,14 @@ public class PhonePePaymentProcessor : BasePlugin, IPaymentMethod
         await _localizationService.AddOrUpdateLocaleResourceAsync(new Dictionary<string, string>
         {
             ["Plugins.Payments.PhonePe.Instructions"] = "PhonePe payment gateway for secure online transactions.",
-            ["Plugins.Payments.PhonePe.Fields.ClientId"] = "Client ID",
-            ["Plugins.Payments.PhonePe.Fields.ClientId.Hint"] = "Enter your PhonePe Client ID.",
-            ["Plugins.Payments.PhonePe.Fields.ClientSecret"] = "Client Secret",
-            ["Plugins.Payments.PhonePe.Fields.ClientSecret.Hint"] = "Enter your PhonePe Client Secret.",
+            ["Plugins.Payments.PhonePe.Fields.ClientId"] = "Client ID (Production)",
+            ["Plugins.Payments.PhonePe.Fields.ClientId.Hint"] = "Enter your PhonePe Client ID for production environment.",
+            ["Plugins.Payments.PhonePe.Fields.ClientSecret"] = "Client Secret (Production)",
+            ["Plugins.Payments.PhonePe.Fields.ClientSecret.Hint"] = "Enter your PhonePe Client Secret for production environment.",
+            ["Plugins.Payments.PhonePe.Fields.SandboxClientId"] = "Sandbox Client ID",
+            ["Plugins.Payments.PhonePe.Fields.SandboxClientId.Hint"] = "Enter your PhonePe Client ID for sandbox/test environment.",
+            ["Plugins.Payments.PhonePe.Fields.SandboxClientSecret"] = "Sandbox Client Secret",
+            ["Plugins.Payments.PhonePe.Fields.SandboxClientSecret.Hint"] = "Enter your PhonePe Client Secret for sandbox/test environment.",
             ["Plugins.Payments.PhonePe.Fields.SaltKey"] = "Salt Key",
             ["Plugins.Payments.PhonePe.Fields.SaltKey.Hint"] = "Enter your PhonePe Salt Key.",
             ["Plugins.Payments.PhonePe.Fields.SaltIndex"] = "Salt Index",

@@ -41,8 +41,6 @@ public interface IPhonePeService
     /// Validates the PhonePe webhook Authorization header.
     /// </summary>
     /// <param name="receivedHeader">The value of the 'Authorization' header from the request.</param>
-    /// <param name="username">The username you configured in the PhonePe Dashboard.</param>
-    /// <param name="password">The password you configured in the PhonePe Dashboard.</param>
     /// <returns>True if the signature is valid; otherwise, false.</returns>
-    bool ValidateCallback(string receivedHeader, string username, string password);
+    bool ValidateCallback(string receivedHeader);
 }

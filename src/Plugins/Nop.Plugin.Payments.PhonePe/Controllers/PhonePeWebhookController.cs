@@ -22,10 +22,6 @@ public class PhonePeWebhookController : Controller
     private readonly IOrderProcessingService _orderProcessingService;
     private readonly ILogger _logger;
 
-    private readonly string _webHookUser="dlsir";
-    private readonly string _webHookPwd = "Test123";
-
-
     #endregion
 
     #region Ctor
@@ -69,7 +65,7 @@ public class PhonePeWebhookController : Controller
             //////}
 
             // Verify webhook signature
-            if (!_phonePeService.ValidateCallback(payload, _webHookUser, _webHookPwd))
+            if (!_phonePeService.ValidateCallback(payload))
             {
                 await _logger.ErrorAsync("PhonePe webhook signature verification failed");
                 return BadRequest("Invalid signature");

@@ -15,7 +15,7 @@ public record ConfigurationModel : BaseNopModel, ISettingsModel
     public int ActiveStoreScopeConfiguration { get; set; }
 
     /// <summary>
-    /// Gets or sets client ID
+    /// Gets or sets client ID (Production)
     /// </summary>
     [NopResourceDisplayName("Plugins.Payments.PhonePe.Fields.ClientId")]
     [Required]
@@ -23,13 +23,28 @@ public record ConfigurationModel : BaseNopModel, ISettingsModel
     public bool ClientId_OverrideForStore { get; set; }
 
     /// <summary>
-    /// Gets or sets client secret
+    /// Gets or sets client secret (Production)
     /// </summary>
     [NopResourceDisplayName("Plugins.Payments.PhonePe.Fields.ClientSecret")]
     [Required]
     [DataType(DataType.Password)]
     public string ClientSecret { get; set; }
     public bool ClientSecret_OverrideForStore { get; set; }
+
+    /// <summary>
+    /// Gets or sets sandbox client ID
+    /// </summary>
+    [NopResourceDisplayName("Plugins.Payments.PhonePe.Fields.SandboxClientId")]
+    public string SandboxClientId { get; set; }
+    public bool SandboxClientId_OverrideForStore { get; set; }
+
+    /// <summary>
+    /// Gets or sets sandbox client secret
+    /// </summary>
+    [NopResourceDisplayName("Plugins.Payments.PhonePe.Fields.SandboxClientSecret")]
+    [DataType(DataType.Password)]
+    public string SandboxClientSecret { get; set; }
+    public bool SandboxClientSecret_OverrideForStore { get; set; }
 
     /// <summary>
     /// Gets or sets salt key

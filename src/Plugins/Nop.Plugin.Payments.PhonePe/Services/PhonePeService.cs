@@ -55,16 +55,17 @@ public class PhonePeService : IPhonePeService
                
                 if (_settings.UseSandbox)
                 {
-                    //Sandbox - Use configured settings or fallback to hardcoded values
-                    parameters.Add("client_id", !string.IsNullOrEmpty(_settings.ClientId) ? _settings.ClientId : "M23CJ5JI2B2F2_2512301009");
+                    // Sandbox - Use configured sandbox settings
+                    var clientId = _settings.SandboxClientId; 
+                    var clientSecret = _settings.SandboxClientSecret; 
+                    parameters.Add("client_id", clientId);
                     parameters.Add("client_version", "1");
-                    parameters.Add("client_secret", !string.IsNullOrEmpty(_settings.ClientSecret) ? _settings.ClientSecret : "YjgwMmJiZTQtZDI5MS00MDBmLWE0YTgtMzQyMDJhNjQ1ZDhj");
+                    parameters.Add("client_secret", clientSecret);
                     parameters.Add("grant_type", "client_credentials");
-
                 }
                 else
                 {
-                    //PRODUCTION - Use configured settings
+                    // Production - Use configured production settings
                     parameters.Add("client_id", _settings.ClientId);
                     parameters.Add("client_version", "1");
                     parameters.Add("client_secret", _settings.ClientSecret);
@@ -87,6 +88,7 @@ public class PhonePeService : IPhonePeService
                             return accessToken.GetString() ?? string.Empty;
                         }
                     }
+                    
                     await _logger.ErrorAsync($"PhonePe payment initiation of Auth Token failed: {responseContent}");
                     return string.Empty;
                 }
@@ -347,13 +349,13 @@ public class PhonePeService : IPhonePeService
     /// <param name="username">The username you configured in the PhonePe Dashboard.</param>
     /// <param name="password">The password you configured in the PhonePe Dashboard.</param>
     /// <returns>True if the signature is valid; otherwise, false.</returns>
-    public bool ValidateCallback(string receivedHeader, string username, string password)
+    public bool ValidateCallback(string receivedHeader)
     {
         if (string.IsNullOrEmpty(receivedHeader))
             return false;
 
         // 1. Construct the raw string: username:password
-        string rawString = $"{username}:{password}";
+        string rawString = $"{_settings.WebhookUser}:{_settings.WebhookPassword}";
 
         // 2. Compute SHA256 hash
         using (SHA256 sha256Hash = SHA256.Create())

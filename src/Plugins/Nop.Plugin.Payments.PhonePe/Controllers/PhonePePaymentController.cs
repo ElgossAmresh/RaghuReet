@@ -87,6 +87,8 @@ public class PhonePePaymentController : BasePluginController
             ActiveStoreScopeConfiguration = storeScope,
             ClientId = settings.ClientId,
             ClientSecret = settings.ClientSecret,
+            SandboxClientId = settings.SandboxClientId,
+            SandboxClientSecret = settings.SandboxClientSecret,
             SaltKey = settings.SaltKey,
             SaltIndex = settings.SaltIndex,
             UseSandbox = settings.UseSandbox,
@@ -100,6 +102,8 @@ public class PhonePePaymentController : BasePluginController
         {
             model.ClientId_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.ClientId, storeScope);
             model.ClientSecret_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.ClientSecret, storeScope);
+            model.SandboxClientId_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.SandboxClientId, storeScope);
+            model.SandboxClientSecret_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.SandboxClientSecret, storeScope);
             model.SaltKey_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.SaltKey, storeScope);
             model.SaltIndex_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.SaltIndex, storeScope);
             model.UseSandbox_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.UseSandbox, storeScope);
@@ -128,6 +132,8 @@ public class PhonePePaymentController : BasePluginController
 
         settings.ClientId = model.ClientId;
         settings.ClientSecret = model.ClientSecret;
+        settings.SandboxClientId = model.SandboxClientId;
+        settings.SandboxClientSecret = model.SandboxClientSecret;
         settings.SaltKey = model.SaltKey;
         settings.SaltIndex = model.SaltIndex;
         settings.UseSandbox = model.UseSandbox;
@@ -138,6 +144,8 @@ public class PhonePePaymentController : BasePluginController
 
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.ClientId, model.ClientId_OverrideForStore, storeScope, false);
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.ClientSecret, model.ClientSecret_OverrideForStore, storeScope, false);
+        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.SandboxClientId, model.SandboxClientId_OverrideForStore, storeScope, false);
+        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.SandboxClientSecret, model.SandboxClientSecret_OverrideForStore, storeScope, false);
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.SaltKey, model.SaltKey_OverrideForStore, storeScope, false);
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.SaltIndex, model.SaltIndex_OverrideForStore, storeScope, false);
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.UseSandbox, model.UseSandbox_OverrideForStore, storeScope, false);
