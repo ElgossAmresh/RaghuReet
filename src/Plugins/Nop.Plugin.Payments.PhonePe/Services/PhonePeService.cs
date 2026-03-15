@@ -343,7 +343,7 @@ public class PhonePeService : IPhonePeService
     /// <param name="username">The username you configured in the PhonePe Dashboard.</param>
     /// <param name="password">The password you configured in the PhonePe Dashboard.</param>
     /// <returns>True if the signature is valid; otherwise, false.</returns>
-    public static bool ValidateCallback(string receivedHeader, string username, string password)
+    public  bool ValidateCallback(string receivedHeader, string username, string password)
     {
         if (string.IsNullOrEmpty(receivedHeader))
             return false;
