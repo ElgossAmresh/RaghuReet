@@ -13,7 +13,7 @@
                     <h4>@T("Plugins.Payments.PhonePe.Instructions")</h4>
                     <ul>
                         <li>Register for a PhonePe merchant account at <a href="https://business.phonepe.com/" target="_blank">PhonePe Business</a></li>
-                        <li>Obtain your Merchant ID, Salt Key, and Salt Index from the PhonePe merchant dashboard</li>
+                        <li>Obtain your Client ID, Client Secret, Salt Key, and Salt Index from the PhonePe merchant dashboard</li>
                         <li>Configure your webhook URLs in PhonePe dashboard</li>
                         <li>Test in sandbox mode before enabling production</li>
                         <li>Ensure your site uses HTTPS for production transactions</li>
@@ -22,12 +22,23 @@
 
                 <div class="form-group row">
                     <div class="col-md-3">
-                        <nop-override-store-checkbox asp-for="MerchantId_OverrideForStore" asp-input="MerchantId" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
-                        <nop-label asp-for="MerchantId" />
+                        <nop-override-store-checkbox asp-for="ClientId_OverrideForStore" asp-input="ClientId" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="ClientId" />
                     </div>
                     <div class="col-md-9">
-                        <nop-editor asp-for="MerchantId" />
-                        <span asp-validation-for="MerchantId"></span>
+                        <nop-editor asp-for="ClientId" />
+                        <span asp-validation-for="ClientId"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="ClientSecret_OverrideForStore" asp-input="ClientSecret" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="ClientSecret" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ClientSecret" asp-password="true" />
+                        <span asp-validation-for="ClientSecret"></span>
                     </div>
                 </div>
 

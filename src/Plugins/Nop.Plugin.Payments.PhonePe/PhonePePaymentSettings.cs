@@ -8,9 +8,14 @@ namespace Nop.Plugin.Payments.PhonePe;
 public class PhonePePaymentSettings : ISettings
 {
     /// <summary>
-    /// Gets or sets merchant ID
+    /// Gets or sets client ID
     /// </summary>
-    public string MerchantId { get; set; }
+    public string ClientId { get; set; }
+
+    /// <summary>
+    /// Gets or sets client secret
+    /// </summary>
+    public string ClientSecret { get; set; }
 
     /// <summary>
     /// Gets or sets salt key

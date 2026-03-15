@@ -85,7 +85,8 @@ public class PhonePePaymentController : BasePluginController
         var model = new ConfigurationModel
         {
             ActiveStoreScopeConfiguration = storeScope,
-            MerchantId = settings.MerchantId,
+            ClientId = settings.ClientId,
+            ClientSecret = settings.ClientSecret,
             SaltKey = settings.SaltKey,
             SaltIndex = settings.SaltIndex,
             UseSandbox = settings.UseSandbox,
@@ -97,7 +98,8 @@ public class PhonePePaymentController : BasePluginController
 
         if (storeScope > 0)
         {
-            model.MerchantId_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.MerchantId, storeScope);
+            model.ClientId_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.ClientId, storeScope);
+            model.ClientSecret_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.ClientSecret, storeScope);
             model.SaltKey_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.SaltKey, storeScope);
             model.SaltIndex_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.SaltIndex, storeScope);
             model.UseSandbox_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.UseSandbox, storeScope);
@@ -124,7 +126,8 @@ public class PhonePePaymentController : BasePluginController
         var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
         var settings = await _settingService.LoadSettingAsync<PhonePePaymentSettings>(storeScope);
 
-        settings.MerchantId = model.MerchantId;
+        settings.ClientId = model.ClientId;
+        settings.ClientSecret = model.ClientSecret;
         settings.SaltKey = model.SaltKey;
         settings.SaltIndex = model.SaltIndex;
         settings.UseSandbox = model.UseSandbox;
@@ -133,7 +136,8 @@ public class PhonePePaymentController : BasePluginController
         settings.AdditionalFee = model.AdditionalFee;
         settings.AdditionalFeePercentage = model.AdditionalFeePercentage;
 
-        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.MerchantId, model.MerchantId_OverrideForStore, storeScope, false);
+        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.ClientId, model.ClientId_OverrideForStore, storeScope, false);
+        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.ClientSecret, model.ClientSecret_OverrideForStore, storeScope, false);
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.SaltKey, model.SaltKey_OverrideForStore, storeScope, false);
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.SaltIndex, model.SaltIndex_OverrideForStore, storeScope, false);
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.UseSandbox, model.UseSandbox_OverrideForStore, storeScope, false);

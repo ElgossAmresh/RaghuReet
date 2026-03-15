@@ -22,7 +22,7 @@ public class PhonePeService : IPhonePeService
     private readonly IWebHelper _webHelper;
     private readonly IHttpClientFactory _httpClientFactory;
 
-    private const string PRODUCTION_Auth_URL = "https://api.phonepe.com/apis/identity-manager";
+    private const string PRODUCTION_AUTH_URL = "https://api.phonepe.com/apis/identity-manager";
     private const string PRODUCTION_URL = "https://api.phonepe.com/apis/pg";
     private const string SANDBOX_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox";
 
@@ -55,25 +55,25 @@ public class PhonePeService : IPhonePeService
                
                 if (_settings.UseSandbox)
                 {
-                    //Sandbox
-                    parameters.Add("client_id", "M23CJ5JI2B2F2_2512301009");
+                    //Sandbox - Use configured settings or fallback to hardcoded values
+                    parameters.Add("client_id", !string.IsNullOrEmpty(_settings.ClientId) ? _settings.ClientId : "M23CJ5JI2B2F2_2512301009");
                     parameters.Add("client_version", "1");
-                    parameters.Add("client_secret", "YjgwMmJiZTQtZDI5MS00MDBmLWE0YTgtMzQyMDJhNjQ1ZDhj");
+                    parameters.Add("client_secret", !string.IsNullOrEmpty(_settings.ClientSecret) ? _settings.ClientSecret : "YjgwMmJiZTQtZDI5MS00MDBmLWE0YTgtMzQyMDJhNjQ1ZDhj");
                     parameters.Add("grant_type", "client_credentials");
 
                 }
                 else
                 {
-                    //PRODUCTION
-                    parameters.Add("client_id", "SU2512071910157338464061");
+                    //PRODUCTION - Use configured settings
+                    parameters.Add("client_id", _settings.ClientId);
                     parameters.Add("client_version", "1");
-                    parameters.Add("client_secret", "26d59e17-e0e2-4da1-94e4-7b8a8d83b04d");
+                    parameters.Add("client_secret", _settings.ClientSecret);
                     parameters.Add("grant_type", "client_credentials");
                 }
               
                 using (var content = new FormUrlEncodedContent(parameters))
                 {
-                    var apiUrl = _settings.UseSandbox ? SANDBOX_URL : PRODUCTION_Auth_URL;
+                    var apiUrl = _settings.UseSandbox ? SANDBOX_URL : PRODUCTION_AUTH_URL;
 
                     var response = await httpClient.PostAsync($"{apiUrl}/v1/oauth/token", content);
 
@@ -186,16 +186,16 @@ public class PhonePeService : IPhonePeService
             var apiUrl = _settings.UseSandbox ? SANDBOX_URL : PRODUCTION_URL;
 
             // Create checksum for status check
-            var checksumPayload = $"/pg/v1/status/{_settings.MerchantId}/{merchantTransactionId}{_settings.SaltKey}";
+            var checksumPayload = $"/pg/v1/status/{_settings.ClientId}/{merchantTransactionId}{_settings.SaltKey}";
             var checksum = GenerateChecksum(checksumPayload);
 
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Add("X-VERIFY", checksum);
-            client.DefaultRequestHeaders.Add("X-MERCHANT-ID", _settings.MerchantId);
+            client.DefaultRequestHeaders.Add("X-MERCHANT-ID", _settings.ClientId);
             client.DefaultRequestHeaders.Add("accept", "application/json");
 
-            var statusUrl = $"{apiUrl}/pg/v1/status/{_settings.MerchantId}/{merchantTransactionId}";
+            var statusUrl = $"{apiUrl}/pg/v1/status/{_settings.ClientId}/{merchantTransactionId}";
 
             await _logger.InformationAsync($"PhonePe: Status check URL: {statusUrl}");
 
@@ -268,7 +268,7 @@ public class PhonePeService : IPhonePeService
 
             var refundRequest = new
             {
-                merchantId = _settings.MerchantId,
+                merchantId = _settings.ClientId,
                 merchantTransactionId = merchantTransactionId,
                 originalTransactionId = refundPaymentRequest.Order.AuthorizationTransactionId,
                 amount = Convert.ToInt64(refundPaymentRequest.AmountToRefund * 100),
@@ -283,7 +283,7 @@ public class PhonePeService : IPhonePeService
             var client = _httpClientFactory.CreateClient();
 
             client.DefaultRequestHeaders.Add("X-VERIFY", checksum);
-            client.DefaultRequestHeaders.Add("X-MERCHANT-ID", _settings.MerchantId);
+            client.DefaultRequestHeaders.Add("X-MERCHANT-ID", _settings.ClientId);
 
             var response = await client.PostAsJsonAsync($"{apiUrl}/pg/v1/refund", new { request = base64Payload });
             var responseContent = await response.Content.ReadAsStringAsync();

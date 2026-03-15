@@ -15,12 +15,21 @@ public record ConfigurationModel : BaseNopModel, ISettingsModel
     public int ActiveStoreScopeConfiguration { get; set; }
 
     /// <summary>
-    /// Gets or sets merchant ID
+    /// Gets or sets client ID
     /// </summary>
-    [NopResourceDisplayName("Plugins.Payments.PhonePe.Fields.MerchantId")]
+    [NopResourceDisplayName("Plugins.Payments.PhonePe.Fields.ClientId")]
     [Required]
-    public string MerchantId { get; set; }
-    public bool MerchantId_OverrideForStore { get; set; }
+    public string ClientId { get; set; }
+    public bool ClientId_OverrideForStore { get; set; }
+
+    /// <summary>
+    /// Gets or sets client secret
+    /// </summary>
+    [NopResourceDisplayName("Plugins.Payments.PhonePe.Fields.ClientSecret")]
+    [Required]
+    [DataType(DataType.Password)]
+    public string ClientSecret { get; set; }
+    public bool ClientSecret_OverrideForStore { get; set; }
 
     /// <summary>
     /// Gets or sets salt key
