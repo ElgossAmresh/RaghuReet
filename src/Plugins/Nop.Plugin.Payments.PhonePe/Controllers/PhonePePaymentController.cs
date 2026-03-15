@@ -89,6 +89,8 @@ public class PhonePePaymentController : BasePluginController
             SaltKey = settings.SaltKey,
             SaltIndex = settings.SaltIndex,
             UseSandbox = settings.UseSandbox,
+            WebhookUser = settings.WebhookUser,
+            WebhookPassword = settings.WebhookPassword,
             AdditionalFee = settings.AdditionalFee,
             AdditionalFeePercentage = settings.AdditionalFeePercentage
         };
@@ -99,6 +101,8 @@ public class PhonePePaymentController : BasePluginController
             model.SaltKey_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.SaltKey, storeScope);
             model.SaltIndex_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.SaltIndex, storeScope);
             model.UseSandbox_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.UseSandbox, storeScope);
+            model.WebhookUser_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.WebhookUser, storeScope);
+            model.WebhookPassword_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.WebhookPassword, storeScope);
             model.AdditionalFee_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.AdditionalFee, storeScope);
             model.AdditionalFeePercentage_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.AdditionalFeePercentage, storeScope);
         }
@@ -124,6 +128,8 @@ public class PhonePePaymentController : BasePluginController
         settings.SaltKey = model.SaltKey;
         settings.SaltIndex = model.SaltIndex;
         settings.UseSandbox = model.UseSandbox;
+        settings.WebhookUser = model.WebhookUser;
+        settings.WebhookPassword = model.WebhookPassword;
         settings.AdditionalFee = model.AdditionalFee;
         settings.AdditionalFeePercentage = model.AdditionalFeePercentage;
 
@@ -131,6 +137,8 @@ public class PhonePePaymentController : BasePluginController
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.SaltKey, model.SaltKey_OverrideForStore, storeScope, false);
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.SaltIndex, model.SaltIndex_OverrideForStore, storeScope, false);
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.UseSandbox, model.UseSandbox_OverrideForStore, storeScope, false);
+        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.WebhookUser, model.WebhookUser_OverrideForStore, storeScope, false);
+        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.WebhookPassword, model.WebhookPassword_OverrideForStore, storeScope, false);
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.AdditionalFee, model.AdditionalFee_OverrideForStore, storeScope, false);
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.AdditionalFeePercentage, model.AdditionalFeePercentage_OverrideForStore, storeScope, false);
 

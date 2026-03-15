@@ -46,4 +46,14 @@ public class PhonePePaymentSettings : ISettings
     /// Gets or sets redirect URL
     /// </summary>
     public string RedirectUrl { get; set; }
+
+    /// <summary>
+    /// Gets or sets webhook username for authentication
+    /// </summary>
+    public string WebhookUser { get; set; }
+
+    /// <summary>
+    /// Gets or sets webhook password for authentication
+    /// </summary>
+    public string WebhookPassword { get; set; }
 }

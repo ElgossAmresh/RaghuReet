@@ -293,7 +293,12 @@ public class PhonePePaymentProcessor : BasePlugin, IPaymentMethod
             ["Plugins.Payments.PhonePe.ViewOrders"] = "View My Orders",
             ["Plugins.Payments.PhonePe.CheckOrderHistoryMessage"] = "You can check your order status in your order history",
             ["Plugins.Payments.PhonePe.PaymentMethodDescription"] = "Pay securely using PhonePe",
-            ["Plugins.Payments.PhonePe.PaymentInfo.Info"] = "You will be redirected to PhonePe's secure payment gateway to complete your transaction."
+            ["Plugins.Payments.PhonePe.PaymentInfo.Info"] = "You will be redirected to PhonePe's secure payment gateway to complete your transaction.",
+            ["Plugins.Payments.PhonePe.Fields.WebhookUser"] = "Webhook Username",
+            ["Plugins.Payments.PhonePe.Fields.WebhookUser.Hint"] = "Enter the webhook username configured in PhonePe Dashboard for webhook authentication.",
+            ["Plugins.Payments.PhonePe.Fields.WebhookPassword"] = "Webhook Password",
+            ["Plugins.Payments.PhonePe.Fields.WebhookPassword.Hint"] = "Enter the webhook password configured in PhonePe Dashboard for webhook authentication.",
+
 
         });
 

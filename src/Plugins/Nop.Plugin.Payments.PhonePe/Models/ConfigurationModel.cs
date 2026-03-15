@@ -59,4 +59,19 @@ public record ConfigurationModel : BaseNopModel, ISettingsModel
     [NopResourceDisplayName("Plugins.Payments.PhonePe.Fields.AdditionalFeePercentage")]
     public bool AdditionalFeePercentage { get; set; }
     public bool AdditionalFeePercentage_OverrideForStore { get; set; }
+
+    /// <summary>
+    /// Gets or sets webhook username
+    /// </summary>
+    [NopResourceDisplayName("Plugins.Payments.PhonePe.Fields.WebhookUser")]
+    public string WebhookUser { get; set; }
+    public bool WebhookUser_OverrideForStore { get; set; }
+
+    /// <summary>
+    /// Gets or sets webhook password
+    /// </summary>
+    [NopResourceDisplayName("Plugins.Payments.PhonePe.Fields.WebhookPassword")]
+    [DataType(DataType.Password)]
+    public string WebhookPassword { get; set; }
+    public bool WebhookPassword_OverrideForStore { get; set; }
 }

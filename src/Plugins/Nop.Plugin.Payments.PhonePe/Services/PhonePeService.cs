@@ -51,22 +51,26 @@ public class PhonePeService : IPhonePeService
         {
             using (var httpClient = _httpClientFactory.CreateClient())
             {
-                //var parameters = new Dictionary<string, string>
-                //{
-                //    ["client_id"] = "SU2512071910157338464061",
-                //    ["client_version"] = "1",
-                //    ["client_secret"] = "26d59e17-e0e2-4da1-94e4-7b8a8d83b04d",
-                //    ["grant_type"] = "client_credentials"
-                //};
-
-                var parameters = new Dictionary<string, string>
+                var parameters = new Dictionary<string, string>();
+               
+                if (_settings.UseSandbox)
                 {
-                    ["client_id"] = "M23CJ5JI2B2F2_2512301009",
-                    ["client_version"] = "1",
-                    ["client_secret"] = "YjgwMmJiZTQtZDI5MS00MDBmLWE0YTgtMzQyMDJhNjQ1ZDhj",
-                    ["grant_type"] = "client_credentials"
-                };
+                    //Sandbox
+                    parameters.Add("client_id", "M23CJ5JI2B2F2_2512301009");
+                    parameters.Add("client_version", "1");
+                    parameters.Add("client_secret", "YjgwMmJiZTQtZDI5MS00MDBmLWE0YTgtMzQyMDJhNjQ1ZDhj");
+                    parameters.Add("grant_type", "client_credentials");
 
+                }
+                else
+                {
+                    //PRODUCTION
+                    parameters.Add("client_id", "SU2512071910157338464061");
+                    parameters.Add("client_version", "1");
+                    parameters.Add("client_secret", "26d59e17-e0e2-4da1-94e4-7b8a8d83b04d");
+                    parameters.Add("grant_type", "client_credentials");
+                }
+              
                 using (var content = new FormUrlEncodedContent(parameters))
                 {
                     var apiUrl = _settings.UseSandbox ? SANDBOX_URL : PRODUCTION_Auth_URL;
@@ -142,7 +146,7 @@ public class PhonePeService : IPhonePeService
             var client = _httpClientFactory.CreateClient();
 
             client.DefaultRequestHeaders.Add("X-VERIFY", checksum);
-          //  client.DefaultRequestHeaders.Add("X-MERCHANT-ID", _settings.MerchantId);
+            //  client.DefaultRequestHeaders.Add("X-MERCHANT-ID", _settings.MerchantId);
 
             string headerToken = "O-Bearer " + await GetAuthTokenAsync(order);
             client.DefaultRequestHeaders.Add("Authorization", headerToken);
@@ -180,7 +184,7 @@ public class PhonePeService : IPhonePeService
             await _logger.InformationAsync($"PhonePe: Verifying payment for transaction: {merchantTransactionId}");
 
             var apiUrl = _settings.UseSandbox ? SANDBOX_URL : PRODUCTION_URL;
-            
+
             // Create checksum for status check
             var checksumPayload = $"/pg/v1/status/{_settings.MerchantId}/{merchantTransactionId}{_settings.SaltKey}";
             var checksum = GenerateChecksum(checksumPayload);
@@ -192,7 +196,7 @@ public class PhonePeService : IPhonePeService
             client.DefaultRequestHeaders.Add("accept", "application/json");
 
             var statusUrl = $"{apiUrl}/pg/v1/status/{_settings.MerchantId}/{merchantTransactionId}";
-            
+
             await _logger.InformationAsync($"PhonePe: Status check URL: {statusUrl}");
 
             var response = await client.GetAsync(statusUrl);
@@ -343,7 +347,7 @@ public class PhonePeService : IPhonePeService
     /// <param name="username">The username you configured in the PhonePe Dashboard.</param>
     /// <param name="password">The password you configured in the PhonePe Dashboard.</param>
     /// <returns>True if the signature is valid; otherwise, false.</returns>
-    public  bool ValidateCallback(string receivedHeader, string username, string password)
+    public bool ValidateCallback(string receivedHeader, string username, string password)
     {
         if (string.IsNullOrEmpty(receivedHeader))
             return false;
