@@ -56,14 +56,6 @@ public class PhonePeWebhookController : Controller
             await _logger.InformationAsync($"PhonePe webhook received. Payload: {payload}");
             await _logger.InformationAsync($"PhonePe webhook signature: {signature}");
 
-            //TODO - Need to fix it later
-            //////// Verify webhook signature
-            //////if (!_phonePeService.VerifyWebhookSignature(payload, signature))
-            //////{
-            //////    await _logger.ErrorAsync("PhonePe webhook signature verification failed");
-            //////    return BadRequest("Invalid signature");
-            //////}
-
             // Verify webhook signature
             if (!_phonePeService.ValidateCallback(payload))
             {
